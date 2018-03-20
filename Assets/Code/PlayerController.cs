@@ -4,16 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	public enum PlayerSetting
-    {
-        Player1,
-        Player2,
-        Player3,
-        Player4
-    }
-
-    public PlayerSetting Player;
-
+    public int player = 1;
     public float walkSpeed;
     public float turnSpeed;
 
@@ -27,16 +18,6 @@ public class PlayerController : MonoBehaviour {
     {
         rb = this.GetComponent<Rigidbody>();
 
-        switch (Player)
-        {
-            case PlayerSetting.Player1:
-                playerSuffix = "P1";
-                break;
-            case PlayerSetting.Player2:
-                playerSuffix = "P2";
-                break;
-        }
-
         LookDirection = rb.position;
     }
 
@@ -45,12 +26,12 @@ public class PlayerController : MonoBehaviour {
     {
         #region forward viewing only
         Vector3 newPosition;
-        newPosition = new Vector3(Input.GetAxis("Horizontal" + playerSuffix), 0, -Input.GetAxis("Vertical" + playerSuffix)).normalized * walkSpeed;
+        newPosition = new Vector3(Input.GetAxis("HorizontalP" + player), 0, -Input.GetAxis("VerticalP" + player)).normalized * walkSpeed;
         rb.MovePosition(rb.position + newPosition);
 
-        if (Mathf.Abs(Input.GetAxis("HorizontalLook" + playerSuffix)) >= .75 || Mathf.Abs(Input.GetAxis("VerticalLook" + playerSuffix)) >= .75)
+        if (Mathf.Abs(Input.GetAxis("HorizontalLookP" + player)) >= .75 || Mathf.Abs(Input.GetAxis("VerticalLookP" + player)) >= .75)
         {
-            LookDirection = rb.position + new Vector3(-Input.GetAxis("HorizontalLook" + playerSuffix), 0, -Input.GetAxis("VerticalLook" + playerSuffix));
+            LookDirection = rb.position + new Vector3(-Input.GetAxis("HorizontalLookP" + player), 0, -Input.GetAxis("VerticalLookP" + player));
             Quaternion lookRot = Quaternion.LookRotation(rb.position - LookDirection);
             rb.rotation = Quaternion.RotateTowards(rb.rotation, lookRot, turnSpeed);
         }

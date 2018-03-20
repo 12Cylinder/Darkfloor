@@ -6,6 +6,7 @@ using UnityEngine;
 public class DungeonGenerator : MonoBehaviour {
 
     public GameManager GM;
+    public GameObject NavMesh;
     public Transform RoomsContainer;
     public Transform WallsContainer;
     public Transform DoorsContainer;
@@ -14,13 +15,14 @@ public class DungeonGenerator : MonoBehaviour {
     public int doorFrequency = 5;
     public int forwardPreference;
 
-    public GameObject startingRoom;
+    public GameObject Spawnpoints;
     public GameObject roomPrefab;
     public GameObject[] wallPrefabs;
     public GameObject floorPrefab;
     public GameObject doorwayPrefab;
     public GameObject ladderPrefab;
     public GameObject bossRoomPrefab;
+    public GameObject startingRoomPrefab;
     public int spawnPointFrequency = 5;
     private Dictionary<GameObject, Vector3> rooms = new Dictionary<GameObject, Vector3>();
 
@@ -29,27 +31,40 @@ public class DungeonGenerator : MonoBehaviour {
     private Vector3 position;
     private bool findNewPosition = false;
     private Vector3 furthestPosition = new Vector3(0, 0, 0);
+    private Vector3 closestPosition = new Vector3(0, 0, 0);
+    private string state;
+    private string progress;
 
     private void Start()
     {
-        if (startingRoom)
-        {
-            rooms.Add(startingRoom, startingRoom.transform.position);
-        }
+        GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         StartCoroutine("GenerateDungeon", maxRooms);
+    }
 
+    private void OnGUI()
+    {
+        if (!GM.generationComplete)
+        {
+            GUI.color = Color.white;
+            GUI.Label(new Rect(20, Screen.height - 20, 500, 20), state + " : " + progress);
+        }
     }
 
     private IEnumerable GenerateDungeon(int max)
     {
+        state = "Generating Rooms";
         GenerateRooms(max);
         GenerateBossRoom();
+        GenerateStartingRoom();
+        state = "Generating Walls";
         GenerateWalls();
+        state = "Generating Doorways";
         GenerateDoorways();
-        
-
-        GM.SendMessage("setNewSpawnPoints", spawnPositions);
-        GM.SendMessage("startGameAfterGeneration");
+        state = "Generating AI NavMesh";
+        GenerateNavMesh();
+        state = "Complete!";
+        GM.setNewSpawnPoints(spawnPositions);
+        GM.startGame();
         rooms.Clear();
         spawnPositions.Clear();
         return null;
@@ -172,6 +187,7 @@ public class DungeonGenerator : MonoBehaviour {
                         spawnPositions.Add(position + new Vector3(0, 2, 0));
                     }
                     i++;
+                    progress = i.ToString() + " / " + max.ToString();
                 }
                 else
                 {
@@ -194,8 +210,23 @@ public class DungeonGenerator : MonoBehaviour {
         newBossRoom.transform.SetParent(transform);
     }
 
+    private void GenerateStartingRoom()
+    {
+        foreach(KeyValuePair<GameObject, Vector3> kvp in rooms)
+        {
+            if(kvp.Value.z < closestPosition.z)
+            {
+                closestPosition = kvp.Value;
+            }
+        }
+        Spawnpoints.transform.position = closestPosition;
+        GameObject newStartingRoom = Instantiate(startingRoomPrefab, closestPosition, startingRoomPrefab.transform.rotation);
+        Spawnpoints.transform.position = closestPosition + new Vector3(0, 0, -20);
+    }
+
     private void GenerateWalls()
     {
+        int i = 0;
         foreach (KeyValuePair<GameObject, Vector3> kvp in rooms)
         {
             Vector3 currentPosition = kvp.Value;
@@ -238,8 +269,11 @@ public class DungeonGenerator : MonoBehaviour {
             }
             if (!roomBack)
             {
-                newWall = Instantiate(wallPrefabs[1], currentPosition, wallPrefabs[1].transform.rotation);
-                newWall.transform.parent = WallsContainer;
+                if (currentPosition != closestPosition)
+                {
+                    newWall = Instantiate(wallPrefabs[1], currentPosition, wallPrefabs[1].transform.rotation);
+                    newWall.transform.parent = WallsContainer;
+                }
             }
             if (!roomLeft)
             {
@@ -251,6 +285,8 @@ public class DungeonGenerator : MonoBehaviour {
                 newWall = Instantiate(wallPrefabs[3], currentPosition, wallPrefabs[3].transform.rotation);
                 newWall.transform.parent = WallsContainer;
             }
+            i++;
+            progress = i.ToString();
         }
     }
 
@@ -301,5 +337,8 @@ public class DungeonGenerator : MonoBehaviour {
         }
     }
 
-
+    void GenerateNavMesh()
+    {
+        NavMesh.SendMessage("BuildNavMesh");
+    }
 }

@@ -41,36 +41,9 @@ public class Doorway : MonoBehaviour {
 
         if (!isOpen && other.gameObject.tag == "Player")
         {
-            if (other.gameObject.GetComponent<PlayerController>().Player == PlayerController.PlayerSetting.Player1)
+            if (Input.GetButton("ActionP" + other.gameObject.GetComponent<PlayerController>().player))
             {
-                if (Input.GetButton("ActionP1"))
-                {
-                    openDoor();
-                }
-            }
-
-            if (other.gameObject.GetComponent<PlayerController>().Player == PlayerController.PlayerSetting.Player2)
-            {
-                if (Input.GetButton("ActionP2"))
-                {
-                    openDoor();
-                }
-            }
-
-            if (other.gameObject.GetComponent<PlayerController>().Player == PlayerController.PlayerSetting.Player3)
-            {
-                if (Input.GetButton("ActionP3"))
-                {
-                    openDoor();
-                }
-            }
-
-            if (other.gameObject.GetComponent<PlayerController>().Player == PlayerController.PlayerSetting.Player4)
-            {
-                if (Input.GetButton("ActionP4"))
-                {
-                    openDoor();
-                }
+                openDoor();
             }
         }
     }

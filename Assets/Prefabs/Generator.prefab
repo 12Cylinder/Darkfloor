@@ -78,8 +78,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1697194203146198}
-  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 0, y: 1, z: -0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4810077401887516}
@@ -91,8 +91,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1503621220274780}
-  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 0, y: 1, z: -0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4810077401887516}
@@ -104,8 +104,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1487141233992718}
-  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 0, y: 1, z: -0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4810077401887516}
@@ -139,13 +139,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GM: {fileID: 0}
+  NavMesh: {fileID: 0}
   RoomsContainer: {fileID: 4570717545210522}
   WallsContainer: {fileID: 4288005679930762}
   DoorsContainer: {fileID: 4408000647554740}
-  maxRooms: 100
+  maxRooms: 500
   doorFrequency: 4
-  forwardPreference: 8
-  startingRoom: {fileID: 0}
+  forwardPreference: 5
+  Spawnpoints: {fileID: 0}
   roomPrefab: {fileID: 1184876176929886, guid: dccd17ba3fc191d468025c83b8d102bb, type: 2}
   wallPrefabs:
   - {fileID: 1108759900361666, guid: 3375d0dad83be7b4bbeb41d3fdffc923, type: 2}
@@ -159,5 +160,7 @@ MonoBehaviour:
   ladderPrefab: {fileID: 1851637147680614, guid: 93fa29658d68661499cc0ab8d6f8f564,
     type: 2}
   bossRoomPrefab: {fileID: 1936047614731446, guid: 4923d95524669e94181063e2e90c1903,
+    type: 2}
+  startingRoomPrefab: {fileID: 1380029350933682, guid: b60aab2124168a34ea55f1846f5e9891,
     type: 2}
   spawnPointFrequency: 5

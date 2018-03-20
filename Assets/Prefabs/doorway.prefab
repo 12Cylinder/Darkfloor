@@ -22,7 +22,8 @@ GameObject:
   - component: {fileID: 33880387175506524}
   - component: {fileID: 23069937261755974}
   - component: {fileID: 65549302784765836}
-  m_Layer: 0
+  - component: {fileID: 114304710926813166}
+  m_Layer: 9
   m_Name: door_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +41,8 @@ GameObject:
   - component: {fileID: 33468670287468730}
   - component: {fileID: 23297651986007826}
   - component: {fileID: 65547967402008166}
-  m_Layer: 0
+  - component: {fileID: 114602216545270302}
+  m_Layer: 9
   m_Name: door_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,6 +112,7 @@ GameObject:
   - component: {fileID: 33417388719061070}
   - component: {fileID: 23677132518955790}
   - component: {fileID: 64408764577869202}
+  - component: {fileID: 114804360740795834}
   m_Layer: 0
   m_Name: doorway
   m_TagString: Untagged
@@ -124,7 +127,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1261333640267680}
   m_LocalRotation: {x: -0.0000020489094, y: 0.7071068, z: 0.7071068, w: 0.0000020489094}
-  m_LocalPosition: {x: 1.8180001, y: -0.00843823, z: 0.902}
+  m_LocalPosition: {x: 1.8180001, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4437691487377452}
@@ -137,7 +140,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1796296222856774}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.003000021, y: -0.00843823, z: 0.902}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.6265917, z: 1}
   m_Children: []
   m_Father: {fileID: 4437691487377452}
@@ -168,7 +171,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1723336344093600}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.003000021, y: 1.36, z: -0.07452798}
+  m_LocalPosition: {x: 0, y: 1.442, z: -0.92}
   m_LocalScale: {x: 4.2146025, y: 2.7660995, z: 1.8813854}
   m_Children: []
   m_Father: {fileID: 4437691487377452}
@@ -181,7 +184,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1280312378815426}
   m_LocalRotation: {x: -0.7071068, y: -0.000000007450581, z: -0.000000007450581, w: 0.7071068}
-  m_LocalPosition: {x: -1.812, y: -0.00843823, z: 0.902}
+  m_LocalPosition: {x: -1.812, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4437691487377452}
@@ -194,7 +197,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1760608146784022}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.003000021, y: 1.72, z: 0.58}
+  m_LocalPosition: {x: 0.003000021, y: 2.07, z: -0.21}
   m_LocalScale: {x: 3.5522525, y: 0.7706164, z: 0.7706164}
   m_Children: []
   m_Father: {fileID: 4437691487377452}
@@ -470,3 +473,48 @@ MonoBehaviour:
   showNotice: 0
   notice: {fileID: 1760608146784022}
   unlocked: 1
+--- !u!114 &114304710926813166
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261333640267680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 1
+  m_AffectedAgents: ffffffff
+--- !u!114 &114602216545270302
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280312378815426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 1
+  m_AffectedAgents: ffffffff
+--- !u!114 &114804360740795834
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1796296222856774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff

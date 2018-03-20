@@ -144,6 +144,7 @@ namespace UnityEngine.AI
 
         public void BuildNavMesh()
         {
+            print("method called to build NavMesh");
             var sources = CollectSources();
 
             // Use unscaled bounds - this differs in behaviour from e.g. collider components.

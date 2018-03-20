@@ -1,47 +1,85 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
+
     #region player spawning
     public bool generationComplete = false;
+    
+
     [System.Serializable]
     public class SpawnInfo
     {
+        public string Name;
         public GameObject PlayerPrefab;
-        public Transform SpawnPoint;
-        public Camera Cam;
     }
 
-    public SpawnInfo Player1 = new SpawnInfo();
-    public SpawnInfo Player2 = new SpawnInfo();
+    public GameObject CameraPrefab;
+    public SpawnInfo[] Players;
+    public List<GameObject> SpawnedPlayers;
+    public List<Camera> SpawnedCameras;
+    public GameObject[] Spawnpoints;
 
-    public void startGameAfterGeneration()
+    private int viewPorts;
+
+    public void startGame()
     {
+        Spawnpoints = GameObject.FindGameObjectsWithTag("Spawnpoint");
+
         generationComplete = true;
+        for (int i = 0; i < Players.Length; i++)
+        {
+            GameObject newPlayer = Instantiate(Players[i].PlayerPrefab, Spawnpoints[i].transform.position, Players[i].PlayerPrefab.transform.rotation);
+            newPlayer.name = Players[i].Name;
+            newPlayer.GetComponent<PlayerMapper>().GM = this.gameObject;
+            newPlayer.GetComponent<PlayerController>().player = i + 1;
 
-        GameObject newPlayer = Instantiate(Player1.PlayerPrefab, Player1.SpawnPoint.position, Player1.PlayerPrefab.transform.rotation);
-        GameObject newCamera = Instantiate(Player1.Cam.gameObject, transform.position, Player1.Cam.transform.rotation);
-        newCamera.GetComponent<CameraFollow>().target = newPlayer;
-        newPlayer.GetComponent<PlayerMapper>().GM = this.gameObject;
-        MapOffset[0].GetComponent<MapBuilder>().target = newPlayer;
-        SpawnedPlayer1 = newPlayer;
+            GameObject newCamera = Instantiate(CameraPrefab, transform.position, CameraPrefab.transform.rotation);
+            newCamera.GetComponent<CameraFollow>().target = newPlayer;
+            SpawnedPlayers.Add(newPlayer);
+            SpawnedCameras.Add(newCamera.GetComponent<Camera>());
+        }
 
-        newPlayer = Instantiate(Player2.PlayerPrefab, Player2.SpawnPoint.position, Player2.PlayerPrefab.transform.rotation);
-        newCamera = Instantiate(Player2.Cam.gameObject, transform.position, Player2.Cam.transform.rotation);
-        newCamera.GetComponent<CameraFollow>().target = newPlayer;
-        newPlayer.GetComponent<PlayerMapper>().GM = this.gameObject;
-        MapOffset[1].GetComponent<MapBuilder>().target = newPlayer;
-        SpawnedPlayer2 = newPlayer;
-
-        newPlayer = null;
-        newCamera = null;
+        if(SpawnedCameras.Count == 1)
+        {
+            SpawnedCameras[0].rect = new Rect(0, 0, 1, 1);
+        }
+        else if(SpawnedCameras.Count == 2)
+        {
+            SpawnedCameras[0].rect = new Rect(0, 0, .5f, 1);
+            SpawnedCameras[1].rect = new Rect(.5f, 0, .5f, 1);
+        }
+        else if(SpawnedCameras.Count == 3)
+        {
+            SpawnedCameras[0].rect = new Rect(0, .5f, .5f, .5f);
+            SpawnedCameras[1].rect = new Rect(.5f, .5f, .5f, .5f);
+            SpawnedCameras[2].rect = new Rect(0, 0, .5f, .5f);
+        }
+        else if (SpawnedCameras.Count == 4)
+        {
+            SpawnedCameras[0].rect = new Rect(0, .5f, .5f, .5f);
+            SpawnedCameras[1].rect = new Rect(.5f, .5f, .5f, .5f);
+            SpawnedCameras[2].rect = new Rect(0, 0, .5f, .5f);
+            SpawnedCameras[3].rect = new Rect(.5f, 0, .5f, .5f);
+        }
     }
+
+    public void endGame()
+    {
+        SpawnedPlayers.Clear();
+        SpawnedCameras.Clear();
+    }
+
     #endregion
+
     #region enemy spawning
-    public GameObject SpawnedPlayer1;
-    public GameObject SpawnedPlayer2;
 
     public Vector3[] enemySpawnPoints;
     public int enemySpawnRate = 15;
@@ -59,25 +97,32 @@ public class GameManager : MonoBehaviour {
 
     public IEnumerable spawnEnemy(GameObject go)
     {
-        bool pointFound = false;
-        int i = 0;
-        while (!pointFound)
+        bool[] distanceGood = new bool[SpawnedPlayers.Count];
+        int p = Random.Range(0, enemySpawnPoints.Length - 1);
+        for(int i = 0; i < SpawnedPlayers.Count; i++)
         {
-            i = Random.Range(0, enemySpawnPoints.Length - 1);
-            if (Vector3.Distance(enemySpawnPoints[i], SpawnedPlayer1.transform.position) > minSpawnDistance && Vector3.Distance(enemySpawnPoints[i], SpawnedPlayer2.transform.position) > minSpawnDistance)
+            distanceGood[i] = (Vector3.Distance(enemySpawnPoints[p], SpawnedPlayers[i].transform.position) > maxSpawnDistance);
+        }
+
+        bool pointGood = true;
+        foreach(bool b in distanceGood)
+        {
+            if (b == false)
             {
-                pointFound = true;
+                pointGood = false;
             }
         }
 
-        Instantiate(enemyPrefabs[0], enemySpawnPoints[i], enemyPrefabs[0].transform.rotation);
+        if (pointGood)
+        {
+            Instantiate(enemyPrefabs[0], enemySpawnPoints[p], enemyPrefabs[0].transform.rotation);
+        }
 
         return null;
     }
     #endregion
 
-    public GameObject[] MapOffset;
-
+    
     private void Update()
     {
         if (enemySpawnPoints.Length > 0)
@@ -90,7 +135,9 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void addMapPixel(Vector3 pos)
+    public GameObject[] MapOffset;
+
+    /*private void addMapPixel(Vector3 pos)
     {
         foreach (GameObject go in MapOffset)
         {
@@ -104,5 +151,5 @@ public class GameManager : MonoBehaviour {
         {
             go.SendMessage("AddPixelBossRoom", pos);
         }
-    }
+    }*/
 }

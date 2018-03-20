@@ -5,16 +5,19 @@ using UnityEngine;
 public class PlayerMapper : MonoBehaviour {
 
     public GameObject GM;
-
+    public bool useMap = false;
     private void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.tag == "Room")
+        if (useMap)
         {
-            GM.SendMessage("addMapPixel", other.transform.position);
-        }
-        else if(other.gameObject.tag == "BossRoom")
-        {
-            GM.SendMessage("addMapPixelBossRoom", other.transform.position);
+            if (other.gameObject.tag == "Room")
+            {
+                GM.SendMessage("addMapPixel", other.transform.position);
+            }
+            else if (other.gameObject.tag == "BossRoom")
+            {
+                GM.SendMessage("addMapPixelBossRoom", other.transform.position);
+            }
         }
     }
 }
