@@ -8,6 +8,7 @@ TagManager:
   - BossRoom
   - GameManager
   - Spawnpoint
+  - Enemy
   layers:
   - Default
   - TransparentFX

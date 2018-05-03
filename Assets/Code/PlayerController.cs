@@ -7,12 +7,16 @@ public class PlayerController : MonoBehaviour {
     public int player = 1;
     public float walkSpeed;
     public float turnSpeed;
+    public float targetingSpeed;
+    public GameObject[] attacks;
+    public float attackRange = 10;
 
     private string playerSuffix;
     private Rigidbody rb;
     private Vector3 LookDirection = new Vector3();
     private Vector3 lastLookDirection = new Vector3();
 
+    private bool targetingMode = false;
 
     private void Start()
     {
@@ -25,30 +29,56 @@ public class PlayerController : MonoBehaviour {
     private void FixedUpdate()
     {
         #region forward viewing only
-        Vector3 newPosition;
-        newPosition = new Vector3(Input.GetAxis("HorizontalP" + player), 0, -Input.GetAxis("VerticalP" + player)).normalized * walkSpeed;
-        rb.MovePosition(rb.position + newPosition);
-
-        if (Mathf.Abs(Input.GetAxis("HorizontalLookP" + player)) >= .75 || Mathf.Abs(Input.GetAxis("VerticalLookP" + player)) >= .75)
+        if (!targetingMode)
         {
-            LookDirection = rb.position + new Vector3(-Input.GetAxis("HorizontalLookP" + player), 0, -Input.GetAxis("VerticalLookP" + player));
-            Quaternion lookRot = Quaternion.LookRotation(rb.position - LookDirection);
-            rb.rotation = Quaternion.RotateTowards(rb.rotation, lookRot, turnSpeed);
+            Vector3 newPosition;
+            newPosition = new Vector3(Input.GetAxis("HorizontalP" + player), 0, -Input.GetAxis("VerticalP" + player)).normalized * walkSpeed;
+            rb.MovePosition(rb.position + newPosition);
+
+            if (Mathf.Abs(Input.GetAxis("HorizontalP" + player)) >= .1 || Mathf.Abs(Input.GetAxis("VerticalP" + player)) >= .1)
+            {
+                LookDirection = rb.position + new Vector3(-Input.GetAxis("HorizontalP" + player), 0, Input.GetAxis("VerticalP" + player)).normalized;
+                Quaternion lookRot = Quaternion.LookRotation(rb.position - LookDirection);
+                rb.rotation = Quaternion.RotateTowards(rb.rotation, lookRot, turnSpeed);
+            }
         }
+        else
+        {
+            GetComponent<CrosshairControl>().CrosshairInstanced.transform.position += new Vector3(Input.GetAxis("HorizontalP" + player), 0, -Input.GetAxis("VerticalP" + player)).normalized * targetingSpeed;
+        }
+        
         #endregion
+    }
 
-        #region relative viewing
-        /*Vector3 newRotation;
-        newRotation = new Vector3(0, Input.GetAxis("HorizontalLook" + playerSuffix) * turnSpeed, 0);
-        transform.Rotate(newRotation);
+    private void Update()
+    {
+        if (Input.GetKeyDown("joystick " + player + " button 3"))
+        {
+            if (!targetingMode)
+            {
+                targetingMode = true;
+                GetComponent<CrosshairControl>().startTargetting();
+            }
+            else
+            {
+                if (Vector3.Distance(transform.position, GetComponent<CrosshairControl>().CrosshairInstanced.transform.position) < attackRange)
+                {
+                    targetingMode = false;
+                    GetComponent<CrosshairControl>().doAttack(attacks[0]);
+                }
+            }
+        }
 
-
-        Vector3 newPosition;
-        Vector3 fwd = Vector3.forward;
-        newPosition = new Vector3(Input.GetAxis("Horizontal" + playerSuffix), 0, -Input.GetAxis("Vertical" + playerSuffix) * Vector3.forward.z).normalized * walkSpeed;
-        newPosition = transform.TransformDirection(newPosition);
-        rb.MovePosition(transform.position + newPosition);*/
-        #endregion
-
+        if (targetingMode)
+        {
+            if(Vector3.Distance(transform.position, GetComponent<CrosshairControl>().CrosshairInstanced.transform.position) > attackRange)
+            {
+                GetComponent<CrosshairControl>().CrosshairInstanced.GetComponentInChildren<Renderer>().material.SetColor(0, Color.red);
+            }
+            else
+            {
+                GetComponent<CrosshairControl>().CrosshairInstanced.GetComponentInChildren<Renderer>().material.SetColor(0, Color.green);
+            }
+        }
     }
 }

@@ -9,10 +9,16 @@ public class AIAgent : MonoBehaviour {
     public GameObject secondaryTarget;
     public int IdleRefreshTime = 5; //how often to find new idle points if no player is found
     public float aggressionRange = 10;
+    public float attackingRange = 4;
+    public int lifetime = 45;
+    public float lookSpeed = 5;
 
+    private float startTime;
+    private bool found = false;
     private NavMeshAgent agent;
     private float lastCycleTime;
     private SphereCollider trigger;
+    private Rigidbody rb;
     [System.Serializable]
     public enum AIState
     {
@@ -25,8 +31,11 @@ public class AIAgent : MonoBehaviour {
     {
         agent = this.GetComponent<NavMeshAgent>();
         agent.SetDestination(new Vector3(0,0,0));
-        trigger = this.GetComponent<SphereCollider>();
+        trigger = GetComponentInChildren<SphereCollider>();
         trigger.radius = aggressionRange;
+        startTime = Time.time;
+        rb = this.GetComponent<Rigidbody>();
+        IdleRefreshTime = Random.Range(4, 10);
 	}
 
     private void Update()
@@ -34,6 +43,19 @@ public class AIAgent : MonoBehaviour {
         if(primarytarget != null)
         {
             agent.SetDestination(primarytarget.transform.position);
+
+            if (Vector3.Distance(primarytarget.transform.position, transform.position) < attackingRange)
+            {
+                agent.isStopped = true;
+                Vector3 rPos = (transform.position - primarytarget.transform.position);
+                Quaternion lookRotation = Quaternion.LookRotation(-rPos);
+                Quaternion newRotation = Quaternion.RotateTowards(rb.rotation, lookRotation, lookSpeed);
+                rb.MoveRotation(newRotation);
+            }
+            else
+            {
+                agent.isStopped = false;
+            }
         }
         else if(secondaryTarget != null)
         {
@@ -57,6 +79,11 @@ public class AIAgent : MonoBehaviour {
                 }
             }
         }
+
+        if(Time.time > startTime + lifetime && !found)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -71,6 +98,7 @@ public class AIAgent : MonoBehaviour {
             {
                 secondaryTarget = other.gameObject;
             }
+            found = true;
         }
     }
 }

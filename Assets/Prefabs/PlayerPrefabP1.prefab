@@ -71,8 +71,11 @@ GameObject:
   - component: {fileID: 4252095698065774}
   - component: {fileID: 136414347759575750}
   - component: {fileID: 54036682680589056}
+  - component: {fileID: 114389631431026512}
   - component: {fileID: 114088986082330214}
   - component: {fileID: 114208693242032986}
+  - component: {fileID: 114076677561016806}
+  - component: {fileID: 114612731749554524}
   m_Layer: 0
   m_Name: PlayerPrefabP1
   m_TagString: Player
@@ -370,6 +373,35 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114076677561016806
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1664340655125034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5468ff7ae9b7f146bf81857fc9214c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDefense:
+    magic_resist: 0
+    physics_resist: 0
+    hitpoints: 100
+  item1:
+    magic_resist: 0
+    physics_resist: 0
+    hitpoints: 0
+  item2:
+    magic_resist: 0
+    physics_resist: 0
+    hitpoints: 0
+  finalDefense:
+    magic_resist: 0
+    physics_resist: 0
+    hitpoints: 0
+  Loot: []
+  currentHitpoints: 0
 --- !u!114 &114088986082330214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -381,9 +413,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6235e7fb4a6fb304aa39217a8a6fdce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: 0
+  player: 1
   walkSpeed: 0.1
-  turnSpeed: 2.5
+  turnSpeed: 10
+  targetingSpeed: 0.2
+  attacks:
+  - {fileID: 1786745667920146, guid: bf519a03f28719c498de9639ed636cd5, type: 2}
+  attackRange: 15
 --- !u!114 &114208693242032986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -396,6 +432,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GM: {fileID: 0}
+  useMap: 0
+--- !u!114 &114389631431026512
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1664340655125034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44631263140dac4aaf61d328c646235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Class: 0
+--- !u!114 &114612731749554524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1664340655125034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 757c3e4d8c0833449afd8978b287305b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CrosshairPrefab: {fileID: 1061165039928140, guid: 64875f5661ccc9240a0aa7fbd487ffd0,
+    type: 2}
+  CrosshairInstanced: {fileID: 0}
 --- !u!120 &120302948526643784
 LineRenderer:
   m_ObjectHideFlags: 1

@@ -337,7 +337,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 954928839}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &245740191
 GameObject:
@@ -487,10 +487,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1606309651}
-  - {fileID: 1107921998}
-  - {fileID: 1866741370}
   - {fileID: 230015867}
+  - {fileID: 1866741370}
+  - {fileID: 1107921998}
+  - {fileID: 1606309651}
   m_Father: {fileID: 604144415}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -570,7 +570,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 954928839}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1143603914
 Prefab:
@@ -700,6 +700,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1198544662}
   - component: {fileID: 1198544661}
+  - component: {fileID: 1198544663}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -718,6 +719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9795c3582a8d32e4c99d0fd9ae630711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomsToGenerate: 500
   generationComplete: 0
   CameraPrefab: {fileID: 1376912048754182, guid: 54f9290b97dd3eb4488789862c1ca89f,
     type: 2}
@@ -725,27 +727,15 @@ MonoBehaviour:
   - Name: Nyxton
     PlayerPrefab: {fileID: 1664340655125034, guid: 203498e946e6b0240a4916d4ae286750,
       type: 2}
-  - Name: Nyxton
-    PlayerPrefab: {fileID: 1664340655125034, guid: 203498e946e6b0240a4916d4ae286750,
-      type: 2}
-  - Name: Nyxton
-    PlayerPrefab: {fileID: 1664340655125034, guid: 203498e946e6b0240a4916d4ae286750,
-      type: 2}
-  - Name: Nyxton
-    PlayerPrefab: {fileID: 1664340655125034, guid: 203498e946e6b0240a4916d4ae286750,
-      type: 2}
   SpawnedPlayers: []
   SpawnedCameras: []
   Spawnpoints: []
   enemySpawnPoints: []
-  enemySpawnRate: 15
-  maxSpawnDistance: 100
+  enemySpawnRate: 30
+  maxSpawnDistance: 200
   minSpawnDistance: 30
   enemyPrefabs:
   - {fileID: 1379202262883436, guid: 234c8706f3dde0e4e8e4070b06d243b3, type: 2}
-  MapOffset:
-  - {fileID: 994442569}
-  - {fileID: 534162681}
 --- !u!4 &1198544662
 Transform:
   m_ObjectHideFlags: 0
@@ -759,6 +749,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &1198544663
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1198544660}
+  m_Enabled: 1
 --- !u!1 &1218393938
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,7 +947,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 954928839}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1608076444
 Prefab:
@@ -1030,7 +1027,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 954928839}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1879933167
 Prefab:
@@ -1039,6 +1036,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114478485071294530, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856,
+        type: 2}
+      propertyPath: SpawnpointsGM.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4810077401887516, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1081,6 +1083,36 @@ Prefab:
       propertyPath: Spawnpoints
       value: 
       objectReference: {fileID: 954928838}
+    - target: {fileID: 114478485071294530, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856,
+        type: 2}
+      propertyPath: maxRooms
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114478485071294530, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856,
+        type: 2}
+      propertyPath: SpawnpointsGM.Array.data[0]
+      value: 
+      objectReference: {fileID: 1606309650}
+    - target: {fileID: 114478485071294530, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856,
+        type: 2}
+      propertyPath: SpawnpointsGM.Array.data[1]
+      value: 
+      objectReference: {fileID: 1107921997}
+    - target: {fileID: 114478485071294530, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856,
+        type: 2}
+      propertyPath: SpawnpointsGM.Array.data[2]
+      value: 
+      objectReference: {fileID: 1866741369}
+    - target: {fileID: 114478485071294530, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856,
+        type: 2}
+      propertyPath: SpawnpointsGM.Array.data[3]
+      value: 
+      objectReference: {fileID: 230015866}
+    - target: {fileID: 114478485071294530, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856,
+        type: 2}
+      propertyPath: spawnPointFrequency
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34a4f7ff3d31d5d4bbc4e1fb2ffe5856, type: 2}
   m_IsPrefabParent: 0

@@ -41,9 +41,10 @@ public class Doorway : MonoBehaviour {
 
         if (!isOpen && other.gameObject.tag == "Player")
         {
-            if (Input.GetButton("ActionP" + other.gameObject.GetComponent<PlayerController>().player))
+            if (Input.GetKey("joystick "+other.GetComponent<PlayerController>().player+" button 2"))
             {
                 openDoor();
+                GetComponent<AudioSource>().Play();
             }
         }
     }

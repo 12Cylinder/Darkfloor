@@ -16,6 +16,7 @@ public class DungeonGenerator : MonoBehaviour {
     public int forwardPreference;
 
     public GameObject Spawnpoints;
+    public GameObject[] SpawnpointsGM;
     public GameObject roomPrefab;
     public GameObject[] wallPrefabs;
     public GameObject floorPrefab;
@@ -38,6 +39,7 @@ public class DungeonGenerator : MonoBehaviour {
     private void Start()
     {
         GM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        maxRooms = GM.roomsToGenerate;
         StartCoroutine("GenerateDungeon", maxRooms);
     }
 
@@ -64,6 +66,7 @@ public class DungeonGenerator : MonoBehaviour {
         GenerateNavMesh();
         state = "Complete!";
         GM.setNewSpawnPoints(spawnPositions);
+        GM.Spawnpoints = SpawnpointsGM;
         GM.startGame();
         rooms.Clear();
         spawnPositions.Clear();

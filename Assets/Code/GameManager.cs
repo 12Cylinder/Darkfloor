@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
     }
 
     #region player spawning
+    public int roomsToGenerate = 500;
     public bool generationComplete = false;
     
 
@@ -31,8 +32,6 @@ public class GameManager : MonoBehaviour {
 
     public void startGame()
     {
-        Spawnpoints = GameObject.FindGameObjectsWithTag("Spawnpoint");
-
         generationComplete = true;
         for (int i = 0; i < Players.Length; i++)
         {
@@ -85,7 +84,6 @@ public class GameManager : MonoBehaviour {
     public int enemySpawnRate = 15;
     public int maxSpawnDistance = 100;
     public int minSpawnDistance = 30;
-
     public GameObject[] enemyPrefabs;
 
     private float lastSpawnTime;
@@ -95,61 +93,50 @@ public class GameManager : MonoBehaviour {
         enemySpawnPoints = points.ToArray();
     }
 
-    public IEnumerable spawnEnemy(GameObject go)
-    {
-        bool[] distanceGood = new bool[SpawnedPlayers.Count];
-        int p = Random.Range(0, enemySpawnPoints.Length - 1);
-        for(int i = 0; i < SpawnedPlayers.Count; i++)
-        {
-            distanceGood[i] = (Vector3.Distance(enemySpawnPoints[p], SpawnedPlayers[i].transform.position) > maxSpawnDistance);
-        }
-
-        bool pointGood = true;
-        foreach(bool b in distanceGood)
-        {
-            if (b == false)
-            {
-                pointGood = false;
-            }
-        }
-
-        if (pointGood)
-        {
-            Instantiate(enemyPrefabs[0], enemySpawnPoints[p], enemyPrefabs[0].transform.rotation);
-        }
-
-        return null;
-    }
     #endregion
 
-    
     private void Update()
     {
         if (enemySpawnPoints.Length > 0)
         {
-            if (Time.time > lastSpawnTime + enemySpawnRate)
+            if (Time.time > lastSpawnTime )
             {
-                lastSpawnTime = Time.time;
-                StartCoroutine("spawnEnemy", enemyPrefabs[0]);
+                lastSpawnTime = Time.time + enemySpawnRate;
+                SpawnEnemies();
             }
         }
     }
 
-    public GameObject[] MapOffset;
-
-    /*private void addMapPixel(Vector3 pos)
+    private void SpawnEnemies()
     {
-        foreach (GameObject go in MapOffset)
+        foreach (Vector3 pos in enemySpawnPoints)
         {
-            go.SendMessage("AddPixel", pos);
+            bool[] distanceGood = new bool[SpawnedPlayers.Count];
+            bool pointGood = true;
+            for (int i = 0; i < SpawnedPlayers.Count; i++)
+            {
+                distanceGood[i] = (Vector3.Distance(pos, SpawnedPlayers[i].transform.position) > minSpawnDistance && Vector3.Distance(pos, SpawnedPlayers[i].transform.position) < maxSpawnDistance);
+            }
+            foreach(bool b in distanceGood)
+            {
+                if(b == false)
+                {
+                    pointGood = false;
+                }
+            }
+
+            if (pointGood)
+            {
+                Instantiate(enemyPrefabs[0], pos, enemyPrefabs[0].transform.rotation);
+            }
         }
     }
 
-    private void addMapPixelBossRoom(Vector3 pos)
+    private void OnDrawGizmosSelected()
     {
-        foreach (GameObject go in MapOffset)
+        foreach(Vector3 pos in enemySpawnPoints)
         {
-            go.SendMessage("AddPixelBossRoom", pos);
+            Gizmos.DrawIcon(pos, "spawn_icon.png", true);
         }
-    }*/
+    }
 }
